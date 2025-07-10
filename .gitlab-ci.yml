@@ -1,0 +1,31 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  API_KEY: $MERRIAM_WEBSTER_API_KEY
+
+build:
+  stage: build
+  script:
+    - python -m pip install --upgrade pip
+    - pip install -r requirements.txt
+  artifacts:
+    paths:
+      - build/
+
+test:
+  stage: test
+  script:
+    - python -m unittest discover
+
+deploy:
+  stage: deploy
+  script:
+    - python -m pip install --upgrade pip
+    - pip install -r requirements.txt
+    - python merriam_webster_cli.py -k $API_KEY exercise
+  artifacts:
+    paths:
+      - deploy/
